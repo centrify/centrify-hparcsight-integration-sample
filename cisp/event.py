@@ -14,7 +14,7 @@
 
 import socket
 from cisp.cef_configs import cef_mappings
-
+from cisp import utils
 
 class Event:
     """ This class represents a CISP event
@@ -86,7 +86,12 @@ class Event:
             for section in sections:
                 if cef_mappings.has_section(section):
                     for key in cef_mappings[section]:
-                        self.cef_message += get_key_string(section, key)
+                        if not (section == 'common' and \
+                                      (cef_mappings.has_section(event_name) and
+                                               key in cef_mappings[event_name]
+                                      )
+                                ):
+                            self.cef_message += get_key_string(section, key)
             if cef_mappings.has_section(event_name):
                 additional_common_section = 'additional_common_with_custom_extension_keys'
             else:
@@ -98,4 +103,3 @@ class Event:
         except Exception as exc:
             print("Problem while constructing CEF formatted message")
             raise exc
-
