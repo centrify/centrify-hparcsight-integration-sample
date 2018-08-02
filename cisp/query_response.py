@@ -20,16 +20,17 @@ class QueryResponse:
     """
     def __init__(self, response):
         response_json = json.loads(response.text)
-        self._events = response_json['Result']['Results']
         self._success = response_json['success']
         self._headers = []
-        for column in response_json['Result']['Columns']:
-            self._headers.append(column['Name'])
-
-        if self._success == 'false':
+        
+        if self._success:
+            self._events = response_json['Result']['Results'] 
+            for column in response_json['Result']['Columns']:
+                self._headers.append(column['Name'])  
+        else:
             """ Below fields will be present only when success=false """
-            self._message = response_json['message']
-            self._exception = response_json['exception']
+            self._message = response_json['Message']
+            self._exception = response_json['Exception']
 
     @property
     def total_events(self):
@@ -54,7 +55,3 @@ class QueryResponse:
     @property
     def events(self):
         return self._events
-
-
-
-
