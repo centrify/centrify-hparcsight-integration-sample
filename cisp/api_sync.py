@@ -78,9 +78,9 @@ def query_events(**kwargs):
                                     data = data,
                                     headers = header)
         if response.status_code == requests.codes.ok:
-            print('Successfully fetched events for query')
             redrockquery_response = QueryResponse(response)
             if redrockquery_response.success:
+                print('Successfully fetched events for query')
                 return redrockquery_response
             else:
                 print("Unsuccessful call to Redrock/query API")
@@ -119,6 +119,3 @@ def cef_generator(query_response):
     except Exception as exc:
         print(exc)
         sys.exit(1)
-
-
-
