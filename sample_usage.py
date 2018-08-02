@@ -30,9 +30,10 @@ if access_token is not None:
     query_response = api_sync.query_events(tenant = tenant,
                                            query = query,
                                            access_token = access_token)
-    print('Total events: ' + str(query_response.total_events))
-    print("CEF formatted event messages:")
-    print('-' * 50)
-    for cef_message in api_sync.cef_generator(query_response):
-        print(cef_message)
+    if query_response is not None:
+        print('Total events: ' + str(query_response.total_events))
+        print("CEF formatted event messages:")
         print('-' * 50)
+        for cef_message in api_sync.cef_generator(query_response):
+            print(cef_message)
+            print('-' * 50)
